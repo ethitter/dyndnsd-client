@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"github.com/joshbetz/config"
 	"io/ioutil"
@@ -27,7 +28,17 @@ func init() {
 	logger.Println("PINGING dyndnsd ENDPOINT")
 
 	// Configuration
-	cfg = config.New("config.json")
+	var configPath string
+	flag.StringVar(&configPath, "config", "", "Config file path")
+	flag.Parse()
+
+	if _, err := os.Stat(configPath); os.IsNotExist(err) {
+		fmt.Println("Config path does not exist. Aborting!\n")
+		flag.Usage()
+		os.Exit(3)
+	}
+
+	cfg = config.New(configPath)
 	cfg.Get("ipv4_endpoint", &ipv4Endpoint)
 	cfg.Get("ipv6_endpoint", &ipv6Endpoint)
 }
