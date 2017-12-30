@@ -6,6 +6,7 @@ import (
 	"github.com/joshbetz/config"
 	"io/ioutil"
 	"log"
+	"net"
 	"net/http"
 	"net/url"
 	"os"
@@ -55,9 +56,15 @@ func main() {
 
 	// IPv4 is required
 	if ipv4, err := getUrl(ipv4Endpoint); err == nil {
-		query := endpoint.Query()
-		query.Set("myip", ipv4)
-		endpoint.RawQuery = query.Encode()
+		if ipv4Valid := net.ParseIP(ipv4); ipv4Valid == nil {
+			logger.Println("Invalid IPv4 address")
+			logger.Printf("%s", err)
+			return
+		} else {
+			query := endpoint.Query()
+			query.Set("myip", ipv4Valid.String())
+			endpoint.RawQuery = query.Encode()
+		}
 	} else {
 		logger.Println("Couldn't retrieve IPv4 address")
 		logger.Printf("%s", err)
@@ -66,9 +73,16 @@ func main() {
 
 	// IPv6 is optional
 	if ipv6, err := getUrl(ipv6Endpoint); err == nil {
-		query := endpoint.Query()
-		query.Set("myip6", ipv6)
-		endpoint.RawQuery = query.Encode()
+		if ipv6Valid := net.ParseIP(ipv6); ipv6Valid == nil {
+			logger.Println("Invalid IPv6 address")
+			logger.Printf("%s", err)
+		} else {
+			// TODO: parse to /64, use ::1.
+
+			query := endpoint.Query()
+			query.Set("myip6", ipv6)
+			endpoint.RawQuery = query.Encode()
+		}
 	} else {
 		logger.Println("Couldn't retrieve IPv6 address")
 		logger.Printf("%s", err)
