@@ -80,7 +80,7 @@ func main() {
 			// TODO: parse to /64, use ::1.
 
 			query := endpoint.Query()
-			query.Set("myip6", ipv6)
+			query.Set("myip6", ipv6Valid.String())
 			endpoint.RawQuery = query.Encode()
 		}
 	} else {
