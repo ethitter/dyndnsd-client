@@ -57,7 +57,7 @@ func main() {
 	// IPv4 is required
 	if ipv4, err := getUrl(ipv4Endpoint); err == nil {
 		if ipv4Valid := net.ParseIP(ipv4); ipv4Valid == nil {
-			logger.Println("Invalid IPv4 address")
+			logger.Println("Invalid IPv4 address returned by endpoint")
 			logger.Printf("%s", err)
 			return
 		} else {
@@ -72,20 +72,32 @@ func main() {
 	}
 
 	// IPv6 is optional
-	if ipv6, err := getUrl(ipv6Endpoint); err == nil {
-		if ipv6Valid := net.ParseIP(ipv6); ipv6Valid == nil {
-			logger.Println("Invalid IPv6 address")
-			logger.Printf("%s", err)
-		} else {
-			// TODO: parse to /64, use ::1.
+	// Leave empty to skip
+	if len(ipv6Endpoint) > 0 {
+		if ipv6, err := getUrl(ipv6Endpoint); err == nil {
+			if ipv6Valid := net.ParseIP(ipv6); ipv6Valid == nil {
+				logger.Println("Invalid IPv6 address returned by endpoint")
+				logger.Printf("%s", err)
+			} else {
+				var ipv6String string
+				var usePrefix bool
+				cfg.Get("ipv6_use_prefix", &usePrefix)
+				ipMask := fmt.Sprintf("%s/%d", ipv6Valid.String(), 64)
 
-			query := endpoint.Query()
-			query.Set("myip6", ipv6Valid.String())
-			endpoint.RawQuery = query.Encode()
+				if ipv6, network, err := net.ParseCIDR(ipMask); usePrefix && err == nil {
+					ipv6String = network.String()
+				} else {
+					ipv6String = ipv6.String()
+				}
+
+				query := endpoint.Query()
+				query.Set("myip6", ipv6String)
+				endpoint.RawQuery = query.Encode()
+			}
+		} else {
+			logger.Println("Couldn't retrieve IPv6 address")
+			logger.Printf("%s", err)
 		}
-	} else {
-		logger.Println("Couldn't retrieve IPv6 address")
-		logger.Printf("%s", err)
 	}
 
 	// Send the update
