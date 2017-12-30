@@ -1,0 +1,11 @@
+{
+  "username": "",
+  "password": "",
+  "protocol": "http",
+  "host": "",
+  "port": 8245,
+  "path": "",
+  "dns_hostname": "",
+  "ipv4_endpoint": "http://whatismyip.akamai.com/",
+  "ipv6_endpoint": "http://ipv6.whatismyip.akamai.com/"
+}
