@@ -18,7 +18,7 @@ var (
 	logger *log.Logger
 )
 
-// Parse config
+// Preparations
 func init() {
 	// Logging
 	logOpts := log.Ldate | log.Ltime | log.LUTC | log.Lshortfile
