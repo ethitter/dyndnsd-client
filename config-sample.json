@@ -8,5 +8,5 @@
   "dns_hostname": "",
   "ipv4_endpoint": "http://whatismyip.akamai.com/",
   "ipv6_endpoint": "http://ipv6.whatismyip.akamai.com/",
-  "ipv6_use_prefix": true
+  "ipv6_use_prefix": false
 }
