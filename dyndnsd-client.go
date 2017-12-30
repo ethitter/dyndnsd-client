@@ -54,8 +54,7 @@ func main() {
 	}
 
 	// IPv4 is required
-	ipv4, err := getUrl(ipv4Endpoint)
-	if err == nil {
+	if ipv4, err := getUrl(ipv4Endpoint); err == nil {
 		query := endpoint.Query()
 		query.Set("myip", ipv4)
 		endpoint.RawQuery = query.Encode()
@@ -66,8 +65,7 @@ func main() {
 	}
 
 	// IPv6 is optional
-	ipv6, err := getUrl(ipv6Endpoint)
-	if err == nil {
+	if ipv6, err := getUrl(ipv6Endpoint); err == nil {
 		query := endpoint.Query()
 		query.Set("myip6", ipv6)
 		endpoint.RawQuery = query.Encode()
