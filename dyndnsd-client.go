@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"strings"
 )
 
 var (
@@ -86,6 +87,7 @@ func main() {
 
 				if ipv6, network, err := net.ParseCIDR(ipMask); usePrefix && err == nil {
 					ipv6String = network.String()
+					ipv6String = strings.Replace(ipv6String, "/64", "1", 1)
 				} else {
 					ipv6String = ipv6.String()
 				}
