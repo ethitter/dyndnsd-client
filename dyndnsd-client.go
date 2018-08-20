@@ -57,15 +57,16 @@ func main() {
 
 	// IPv4 is required
 	if ipv4, err := getURL(ipv4Endpoint); err == nil {
-		if ipv4Valid := net.ParseIP(ipv4); ipv4Valid == nil {
+		ipv4Valid := net.ParseIP(ipv4)
+		if ipv4Valid == nil {
 			logger.Println("Invalid IPv4 address returned by endpoint")
 			logger.Printf("%s", err)
 			return
-		} else {
-			query := endpoint.Query()
-			query.Set("myip", ipv4Valid.String())
-			endpoint.RawQuery = query.Encode()
 		}
+
+		query := endpoint.Query()
+		query.Set("myip", ipv4Valid.String())
+		endpoint.RawQuery = query.Encode()
 	} else {
 		logger.Println("Couldn't retrieve IPv4 address")
 		logger.Printf("%s", err)
