@@ -1,4 +1,4 @@
-`dyndnsd-client`
+`dyndnsd-client` [![pipeline status](https://git.ethitter.com/open-source/dyndnsd-client/badges/master/pipeline.svg)](https://git.ethitter.com/open-source/dyndnsd-client/commits/master)
 ================
 
 Client for the [`dyndnsd`](https://github.com/cmur2/dyndnsd) daemon. Set up `dyndnsd` first, otherwise this is useless.
