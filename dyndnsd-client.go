@@ -35,7 +35,7 @@ func init() {
 	flag.Parse()
 
 	if _, err := os.Stat(configPath); os.IsNotExist(err) {
-		fmt.Println("Config path does not exist. Aborting!\n")
+		fmt.Println("Config path does not exist. Aborting!")
 		flag.Usage()
 		os.Exit(3)
 	}
@@ -48,7 +48,7 @@ func init() {
 // Do the update!
 func main() {
 	// Base URL
-	endpoint, err := buildEndpointUrl()
+	endpoint, err := buildEndpointURL()
 	if err != nil {
 		logger.Println("Couldn't build endpoint URL")
 		logger.Printf("%s", err)
@@ -56,7 +56,7 @@ func main() {
 	}
 
 	// IPv4 is required
-	if ipv4, err := getUrl(ipv4Endpoint); err == nil {
+	if ipv4, err := getURL(ipv4Endpoint); err == nil {
 		if ipv4Valid := net.ParseIP(ipv4); ipv4Valid == nil {
 			logger.Println("Invalid IPv4 address returned by endpoint")
 			logger.Printf("%s", err)
@@ -75,7 +75,7 @@ func main() {
 	// IPv6 is optional
 	// Leave empty to skip
 	if len(ipv6Endpoint) > 0 {
-		if ipv6, err := getUrl(ipv6Endpoint); err == nil {
+		if ipv6, err := getURL(ipv6Endpoint); err == nil {
 			if ipv6Valid := net.ParseIP(ipv6); ipv6Valid == nil {
 				logger.Println("Invalid IPv6 address returned by endpoint")
 				logger.Printf("%s", err)
@@ -103,7 +103,7 @@ func main() {
 	}
 
 	// Send the update
-	dyndns, err := getUrl(endpoint.String())
+	dyndns, err := getURL(endpoint.String())
 	if err != nil {
 		logger.Println("Couldn't update dyndnsd endpoint")
 		logger.Printf("%s", err)
@@ -115,7 +115,7 @@ func main() {
 }
 
 // Build endpoint URL from configuration
-func buildEndpointUrl() (*url.URL, error) {
+func buildEndpointURL() (*url.URL, error) {
 	var username string
 	var password string
 	var protocol string
@@ -132,27 +132,27 @@ func buildEndpointUrl() (*url.URL, error) {
 	cfg.Get("path", &path)
 	cfg.Get("dns_hostname", &hostname)
 
-	daemonUrl, err := url.Parse("")
+	daemonURL, err := url.Parse("")
 	if err != nil {
 		return nil, err
 	}
 
-	daemonUrl.Scheme = protocol
-	daemonUrl.Host = fmt.Sprintf("%s:%d", host, port)
-	daemonUrl.Path = path
+	daemonURL.Scheme = protocol
+	daemonURL.Host = fmt.Sprintf("%s:%d", host, port)
+	daemonURL.Path = path
 
 	userInfo := url.UserPassword(username, password)
-	daemonUrl.User = userInfo
+	daemonURL.User = userInfo
 
-	query := daemonUrl.Query()
+	query := daemonURL.Query()
 	query.Set("hostname", hostname)
-	daemonUrl.RawQuery = query.Encode()
+	daemonURL.RawQuery = query.Encode()
 
-	return daemonUrl, nil
+	return daemonURL, nil
 }
 
 // Retrieve given URL
-func getUrl(url string) (string, error) {
+func getURL(url string) (string, error) {
 	resp, err := http.Get(url)
 	if err != nil {
 		return "", err
