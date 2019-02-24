@@ -1,5 +1,5 @@
 PROJECT_NAME := "dyndnsd-client"
-PKG := "git.ethitter.com/debian/$(PROJECT_NAME)"
+PKG := "git.ethitter.com/open-source/$(PROJECT_NAME)"
 PKG_LIST := $(shell go list ${PKG}/... | grep -v /vendor/)
 GO_FILES := $(shell find . -name '*.go' | grep -v /vendor/ | grep -v _test.go)
 
