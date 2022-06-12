@@ -28,6 +28,7 @@ before_script:
   - make dep
 
   - ls -la $GOPATH/bin
+  - find / -type f -name gox
 
 unit_tests:
   stage: test
