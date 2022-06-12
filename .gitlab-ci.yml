@@ -16,8 +16,6 @@ stages:
   - build
 
 before_script:
-  - echo $GOPATH
-  - echo $PATH
   - mkdir -p $GOPATH/src/$(dirname $REPO_NAME)
   - cp -R $CI_PROJECT_DIR $GOPATH/src/$REPO_NAME
   - cd $GOPATH/src/$REPO_NAME
@@ -26,9 +24,6 @@ before_script:
   - export CC=clang
 
   - make dep
-
-  - ls -la $GOPATH/bin
-  - find / -type f -name gox
 
 unit_tests:
   stage: test
