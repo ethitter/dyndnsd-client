@@ -27,6 +27,8 @@ before_script:
 
   - make dep
 
+  - ls -la $GOPATH/bin
+
 unit_tests:
   stage: test
   script:
