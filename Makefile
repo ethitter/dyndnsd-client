@@ -26,8 +26,7 @@ coverhtml:
 	./tools/coverage.sh html;
 
 dep:
-	@go get -v -d ./...
-	@go install github.com/mitchellh/gox@latest
+	@go get -v ./...
 
 build: dep
 	@gox -output="${CI_PROJECT_DIR}/${PROJECT_NAME}/{{.Dir}}_{{.OS}}_{{.Arch}}" -parallel=6 -osarch '!darwin/386'
