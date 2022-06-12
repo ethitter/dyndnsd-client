@@ -27,6 +27,7 @@ coverhtml:
 
 dep:
 	@go get -v ./...
+	@go install github.com/mitchellh/gox@latest
 
 build: dep
 	@gox -output="${CI_PROJECT_DIR}/${PROJECT_NAME}/{{.Dir}}_{{.OS}}_{{.Arch}}" -parallel=6 -osarch '!darwin/386'
